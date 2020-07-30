@@ -1,4 +1,4 @@
-# # esp-rak811-presion-temperatura-luminosidad
+# # esp-rak811-weather-station
 # #### Ing. Germán A. Xander 2020
 #
 # A simple example for educational purpose.
