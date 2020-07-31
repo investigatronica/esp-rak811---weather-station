@@ -21,8 +21,10 @@ led_onboard=Pin(2, Pin.OUT)
 #define pins 4 and 5 for UART because UART0 are used for USB and
 # UART1  are "used by Flash chip and cannot be used for other purposes."*
 #* https://forum.micropython.org/viewtopic.php?p=27259&sid=5ffaee5b5c0819cefc11f73e91b804aa#p27259
+scl1=Pin(5, pull=Pin.PULL_UP)
+sda1=Pin(4, pull=Pin.PULL_UP)
 i2c = I2C(0)
-i2c = I2C(1, scl=Pin(5), sda=Pin(4))
+i2c = I2C(1, scl=scl1, sda=sda1)
 s = BH1750(i2c)
 bmp180 = BMP180(i2c)
 bmp180.oversample_sett = 2
@@ -127,7 +129,7 @@ while True:
         uart.write(str.encode("at+get_config=lora:status\r\n"))
         time.sleep(1)
         estado=uart.read()
-        contador=int(str(estado).split("\\r\\nDownLinkCounter")[0].split("UpLinkCounter: ")[1])-1#retrive lora counter
+        contador=str(estado).split("\\r\\nDownLinkCounter")[0].split("UpLinkCounter: ")[1]#retrive lora counter
         print("Frame Nro: "+ str(contador))
         pisca(.25)
     uart.write(str.encode("at+set_config=device:sleep:1\r\n")) #put rak811 in sleep mode
@@ -135,4 +137,4 @@ while True:
     print("sleep: "+str(uart.read()))
     i +=1
     #int(payload[0]<<16) + int(payload[1]<<8) + int(payload[2])
-    time.sleep(170)
+    time.sleep(110)
